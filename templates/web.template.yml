@@ -15,7 +15,7 @@ env:
 
 params:
   # SSH key is required for remote access into the container
-  version: tests-passed
+  version: okay
 
   home: /var/www/discourse
   upload_size: 3m
@@ -76,9 +76,9 @@ run:
         - git clean -f
         - git remote add cvquant https://github.com/cvquant/discourse.git
         - git remote set-branches --add cvquant master
-        - git pull cvquant
+        - git pull cvquant master
         - git fetch cvquant $version
-        - git checkout $version
+        - git checkout cvquant/$version
         - mkdir -p tmp/pids
         - mkdir -p tmp/sockets
         - touch tmp/.gitkeep
