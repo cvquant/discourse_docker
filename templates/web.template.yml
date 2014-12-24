@@ -74,9 +74,10 @@ run:
       cmd:
         - git reset --hard
         - git clean -f
-        - git remote set-branches --add origin master
-        - git pull
-        - git fetch origin $version
+        - git remote add cvquant https://github.com/cvquant/discourse.git
+        - git remote set-branches --add cvquant master
+        - git pull cvquant
+        - git fetch cvquant $version
         - git checkout $version
         - mkdir -p tmp/pids
         - mkdir -p tmp/sockets
