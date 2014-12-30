@@ -75,9 +75,7 @@ run:
         - git reset --hard
         - git clean -f
         - git remote add cvquant https://github.com/cvquant/discourse.git
-        - git remote set-branches --add cvquant master
-        - git pull cvquant master
-        - git fetch cvquant $version
+        - git fetch cvquant
         - git checkout cvquant/$version
         - mkdir -p tmp/pids
         - mkdir -p tmp/sockets
