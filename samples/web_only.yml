@@ -22,7 +22,7 @@ env:
 
   ## TODO: configure connectivity to the databases
   DISCOURSE_DB_SOCKET: ''
-  #DISCOURSE_DB_USER: discourse
+  #DISCOURSE_DB_USERNAME: discourse
   DISCOURSE_DB_PASSWORD: SOME_SECRET
   DISCOURSE_DB_HOST: DB_IP_ADDRESS
   DISCOURSE_REDIS_HOST: REDIS_IP_ADDRESS
@@ -72,7 +72,6 @@ run:
   - exec: echo "Beginning of custom commands"
 
   ## If you want to configure password login for root, uncomment and change:
-  #- exec: apt-get -y install whois # for mkpasswd
   ## Use only one of the following lines:
   #- exec: /usr/sbin/usermod -p 'PASSWORD_HASH' root
   #- exec: /usr/sbin/usermod -p "$(mkpasswd -m sha-256 'RAW_PASSWORD')" root

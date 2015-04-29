@@ -67,7 +67,7 @@ If the environment variable "SUPERVISED" is set to true, the container won't be 
 
 ### Container Configuration
 
-The beginning of the container definition will contain 3 "special" sections:
+The beginning of the container definition can contain the following "special" sections:
 
 #### templates:
 
@@ -77,7 +77,7 @@ templates:
   - "templates/postgres.template.yml"
 ```
 
-This template is "composed" out of all these child templates, this allows for a very flexible configuration struture. Furthermore you may add specific hooks that extend the templates you reference.
+This template is "composed" out of all these child templates, this allows for a very flexible configuration structure. Furthermore you may add specific hooks that extend the templates you reference.
 
 #### expose:
 
@@ -100,7 +100,18 @@ volumes:
 
 ```
 
-Expose a directory inside the host inside the container.
+Expose a directory inside the host to the container.
+
+#### links:
+```
+links:
+  - link:
+      name: postgres
+      alias: postgres
+```
+
+Links another container to the current container. This will add `--link postgres:postgres`
+to the options when running the container.
 
 ### Upgrading Discourse
 
@@ -165,6 +176,7 @@ installs you can ensure they are in sync by looking at `/etc/passwd` and
 - [Setting up SSL with Discourse Docker](https://meta.discourse.org/t/allowing-ssl-for-your-discourse-docker-setup/13847)
 - [Multisite configuration with Docker](https://meta.discourse.org/t/multisite-configuration-with-docker/14084)
 - [Linking containers for a multiple container setup](https://meta.discourse.org/t/linking-containers-for-a-multiple-container-setup/20867)
+- [Replace rubygems.org with taobao mirror to resolve network error in China](https://meta.discourse.org/t/replace-rubygems-org-with-taobao-mirror-to-resolve-network-error-in-china/21988/1)
 
 License
 ===

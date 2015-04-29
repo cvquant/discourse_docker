@@ -24,8 +24,11 @@ run:
        ssl_certificate_key /shared/ssl/ssl.key;
 
        ssl_session_tickets off;
+       ssl_session_cache shared:SSL:1m;
 
        # enable SPDY header compression
+       # The server CAN enable it without any known security risk:
+       # https://github.com/18F/tls-standards/issues/24
        spdy_headers_comp 6;
 
        # remember the certificate for a year and automatically connect to HTTPS for this domain

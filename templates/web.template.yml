@@ -18,7 +18,7 @@ params:
   version: okay
 
   home: /var/www/discourse
-  upload_size: 3m
+  upload_size: 10m
 
 run:
   - exec: /usr/local/bin/ruby -e 'if ENV["DISCOURSE_SMTP_ADDRESS"] == "smtp.example.com"; puts "Aborting! Mail is not configured!"; exit 1; end'
@@ -188,15 +188,22 @@ run:
                 endscript
         }
 
-  - replace:
-      filename: "/etc/logrotate.d/nginx"
-      from: "weekly"
-      to: "daily"
-
-  - replace:
-      filename: "/etc/logrotate.d/nginx"
-      from: "52"
-      to: "14"
+  - file:
+     path: /etc/logrotate.d/nginx
+     contents: |
+        /var/log/nginx/*.log {
+          daily
+          missingok
+          rotate 14
+          compress
+          delaycompress
+          notifempty
+          create 0640 www-data adm
+          sharedscripts
+          postrotate
+            sv 1 nginx
+          endscript
+        }
 
   # move state out of the container this fancy is done to support rapid rebuilds of containers,
   # we store anacron and logrotate state outside the container to ensure its maintained across builds

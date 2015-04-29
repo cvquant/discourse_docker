@@ -2,7 +2,7 @@
 # When new LTS ships we can upgrade
 
 # NAME:     discourse_base
-# VERSION:  1.0.7
+# VERSION:  1.0.11
 
 FROM ubuntu:14.04
 
@@ -28,11 +28,12 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
                        libxslt-dev libcurl4-openssl-dev \
                        libssl-dev libyaml-dev libtool \
                        libxml2-dev gawk \
-                       pngcrush imagemagick \
+                       pngcrush gifsicle \
                        postgresql-9.3 postgresql-client-9.3 \
                        postgresql-contrib-9.3 libpq-dev libreadline-dev \
                        nginx language-pack-en sudo cron anacron \
-                       psmisc rsyslog vim &&\
+                       psmisc rsyslog vim whois &&\
+    sed -i -e 's/start -q anacron/anacron -s/' /etc/cron.d/anacron &&\
     sed -i.bak 's/$ModLoad imklog/#$ModLoad imklog/' /etc/rsyslog.conf &&\
     dpkg-divert --local --rename --add /sbin/initctl &&\
     sh -c "test -f /sbin/initctl || ln -s /bin/true /sbin/initctl" &&\
@@ -52,13 +53,16 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
       rm phantomjs-1.9.8-linux-x86_64.tar.bz2 &&\
       cp phantomjs-1.9.8-linux-x86_64/bin/phantomjs /bin/phantomjs &&\
       rm -fr phantomjs-1.9.8-linux-x86_64 &&\
-    wget http://static.jonof.id.au/dl/kenutils/pngout-20130221-linux.tar.gz &&\
-      tar -xf pngout-20130221-linux.tar.gz &&\
-      rm pngout-20130221-linux.tar.gz &&\
-      cp pngout-20130221-linux/x86_64/pngout /bin/pngout &&\
-      rm -rf pngout-20130221-linux &&\
+    wget http://static.jonof.id.au/dl/kenutils/pngout-20150319-linux.tar.gz &&\
+      tar -xf pngout-20150319-linux.tar.gz &&\
+      rm pngout-20150319-linux.tar.gz &&\
+      cp pngout-20150319-linux/x86_64/pngout /bin/pngout &&\
+      rm -rf pngout-20150319-linux &&\
     apt-get install -y nodejs &&\
     npm install uglify-js -g
+
+ADD install-imagemagick /tmp/install-imagemagick
+RUN /tmp/install-imagemagick
 
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test &&\
     apt-get update &&\
@@ -67,7 +71,7 @@ RUN add-apt-repository ppa:ubuntu-toolchain-r/test &&\
     echo 'gem: --no-document' >> /usr/local/etc/gemrc &&\
     mkdir /src && cd /src && git clone https://github.com/sstephenson/ruby-build.git &&\
     cd /src/ruby-build && ./install.sh &&\
-    cd / && rm -rf /src/ruby-build && ruby-build 2.0.0-p594 /usr/local &&\
+    cd / && rm -rf /src/ruby-build && ruby-build 2.0.0-p645 /usr/local &&\
     gem update --system &&\
     gem install bundler &&\
     rm -rf /usr/local/share/ri/2.0.0/system &&\
